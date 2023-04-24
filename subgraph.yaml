@@ -1,0 +1,30 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: MembershipManager
+    network: matic
+    source:
+      address: "0x47da765370aeed06abaf893cd72ce1e997759bd1"
+      abi: MembershipManager
+      startBlock: 25836452
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - MembershipRefunded
+        - MembershipStarted
+        - OwnershipTransferred
+      abis:
+        - name: MembershipManager
+          file: ./abis/MembershipManager.json
+      eventHandlers:
+        - event: MembershipRefunded(address,uint256,uint256)
+          handler: handleMembershipRefunded
+        - event: MembershipStarted(address,uint256)
+          handler: handleMembershipStarted
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/membership-manager.ts
